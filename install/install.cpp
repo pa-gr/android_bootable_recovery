@@ -587,8 +587,11 @@ static InstallResult VerifyAndInstallPackage(Package* package, bool* wipe_cache,
   // Verify package.
   if (!verify_package(package, ui)) {
     log_buffer->push_back(android::base::StringPrintf("error: %d", kZipVerificationFailure));
-    if (!ui->IsTextVisible() || !ask_to_continue_unverified(ui->GetDevice())) {
+    if (!ui->IsTextVisible()) {
         return INSTALL_CORRUPT;
+    }
+    if (!ask_to_continue_unverified(ui->GetDevice())) {
+        return INSTALL_NONE;
     }
   }
 
